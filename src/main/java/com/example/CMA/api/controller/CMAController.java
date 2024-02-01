@@ -5,6 +5,7 @@ import com.example.CMA.api.service.CMAService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@RestController
 public class CMAController {
 
     private final CMAService contactService;
@@ -55,6 +56,10 @@ public class CMAController {
         contactService.saveOrUpdateContact(Contact);
 
         return Contact.getId();
+
+    }
+
+    public static void main(String[] args) {
 
     }
 }

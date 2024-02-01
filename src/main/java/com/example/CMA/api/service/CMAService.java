@@ -1,6 +1,5 @@
 package com.example.CMA.api.service;
 
-import com.example.CMA.api.dto.ContactDTO;
 import com.example.CMA.api.model.Contact;
 import com.example.CMA.api.repository.ContactManagementAppRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ public class CMAService {
     public List<Contact> getContacts() {
 
 
-        List<Contact> listOfContacts = new ArrayList<Contact>();
+        List<Contact> listOfContacts = new ArrayList<>();
         CMARepository.findAll().forEach(Contact -> listOfContacts.add(Contact));
 
         return listOfContacts;
