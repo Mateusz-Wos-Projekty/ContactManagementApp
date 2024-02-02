@@ -1,7 +1,7 @@
-package com.example.CMA.API.Controller;
+package CMA.API.Controller;
 
-import com.example.CMA.API.Model.Contact;
-import com.example.CMA.API.Service.CMAService;
+import CMA.API.Model.Contact;
+import CMA.API.Service.CMAService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 @RestController

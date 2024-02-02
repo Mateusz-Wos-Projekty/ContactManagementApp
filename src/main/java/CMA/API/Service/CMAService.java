@@ -1,8 +1,9 @@
-package com.example.CMA.API.Service;
+package CMA.API.Service;
 
-import com.example.CMA.API.Model.Contact;
-import com.example.CMA.API.Repository.ContactManagementAppRepository;
+import CMA.API.Model.Contact;
+import CMA.API.Repository.ContactManagementAppRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 @Service
@@ -24,30 +25,18 @@ public class CMAService {
 
         return listOfContacts;
     }
-    public Contact getContactById(int id) {
-
-        //to have a look at
-//        try (contactManagementAppRepository) {
-//            if (contactManagementAppRepository.getById()) {
-//                return file.nextLine();
-//            } else {
-//                throw new IllegalArgumentException("Non readable file");
-//            }
-//        } catch (FileNotFoundException err) {
-//            if (!isCorrectFileName(fileName)) {
-//                throw new ContactNotFoundException(
-//                        "The contact does not exist : " + fileName , err);
-//            }
-        return contactManagementAppRepository.findById(id).orElseThrow();
+    public Contact getContactById(int id)  {
+        try {
+            return contactManagementAppRepository.findById(id).orElseThrow();
+        } catch (ContactNotFoundException e) {
+            throw new ContactNotFoundException("Contact Not Found",e);
+        }
     }
-    public int saveOrUpdateContact(Contact contact) {
-        var newInt = contactManagementAppRepository.saveAndFlush(contact);
+    public void saveOrUpdateContact(Contact contact) {
         contactManagementAppRepository.saveAndFlush(contact);
-        return newInt.getId();
     }
-    public int deleteContact(int id) {
+    public void deleteContact(int id) {
         contactManagementAppRepository.deleteById(id);
-        return id;
     }
     public class ContactNotFoundException extends RuntimeException{
         public ContactNotFoundException(String errorMessage, Throwable err) {

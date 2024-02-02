@@ -1,4 +1,4 @@
-package com.example.CMA.API.Model;
+package CMA.API.Model;
 
 import java.time.LocalDate;
 public class Contact {

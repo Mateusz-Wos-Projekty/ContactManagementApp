@@ -1,4 +1,4 @@
-package com.example.CMA.API.DTO;
+package CMA.API.DTO;
 
 import java.time.LocalDate;
 public class ContactDTO {
