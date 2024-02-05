@@ -1,14 +1,14 @@
-package CMA.API.Model;
+package cma.api.dto;
 
 import java.time.LocalDate;
-public class Contact {
+public class ContactDTO {
     private int id;
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
     private String address;
     private int mobileNumber;
-    public Contact() {
+    public ContactDTO(){
         id = 0;
         firstName = "";
         lastName = "";
@@ -16,31 +16,13 @@ public class Contact {
         address = "";
         mobileNumber = 0;
     }
-    public Contact(int id, String firstName, String lastName, LocalDate dateOfBirth, String address, int mobileNumber) {
+    public ContactDTO(int id, String firstName, String lastName, LocalDate dateOfBirth, String address, int mobileNumber) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.address = address;
         this.mobileNumber = mobileNumber;
-    }
-    public int getId() {
-        return id;
-    }
-    public String getFirstName() {
-        return firstName;
-    }
-    public String getLastName() {
-        return lastName;
-    }
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-    public String getAddress() {
-        return address;
-    }
-    public int getMobileNumber() {
-        return mobileNumber;
     }
     public void setId(int id) {
         this.id = id;
@@ -60,15 +42,22 @@ public class Contact {
     public void setMobileNumber(int mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
-    @Override
-    public String toString() {
-        return "Contact{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", address='" + address + '\'' +
-                ", mobileNumber=" + mobileNumber +
-                '}';
+    public int getId() {
+        return id;
+    }
+    public String getFirstName() {
+        return firstName;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+    public String getAddress() {
+        return address;
+    }
+    public int getMobileNumber() {
+        return mobileNumber;
     }
 }
