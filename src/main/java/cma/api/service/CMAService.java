@@ -4,13 +4,8 @@ import cma.api.mapper.CMAMapper;
 import cma.api.model.Contact;
 import cma.api.repository.ContactManagementAppRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
-
-import static java.lang.System.err;
-
 @Service
 public class CMAService {
     private CMAMapper newMapper;
