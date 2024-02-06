@@ -43,7 +43,7 @@ public class CMAService {
     public void setNewMapper(CMAMapper newMapper) {
         this.newMapper = newMapper;
     }
-    public class ContactNotFoundException extends RuntimeException {
+    public static class ContactNotFoundException extends RuntimeException {
         public ContactNotFoundException(String errorMessage, Throwable err) {
             super(errorMessage, err);
         }

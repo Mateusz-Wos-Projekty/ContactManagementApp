@@ -20,6 +20,6 @@ public class CMAController {
       przejdę do pozostałych endpointow */
     @PostMapping("/post")
     public @ResponseBody ResponseEntity<String> saveContact() {
-        return new ResponseEntity<String>("POST Response", HttpStatus.OK);
+        return new ResponseEntity<>("POST Response", HttpStatus.OK);
     }
 }
