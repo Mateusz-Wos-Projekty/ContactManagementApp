@@ -37,6 +37,4 @@ public class CMAService {
     public void deleteContact(int id) {
         contactManagementAppRepository.deleteById(id);
     }
-
-
 }
