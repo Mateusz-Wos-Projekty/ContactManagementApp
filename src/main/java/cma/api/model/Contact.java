@@ -1,13 +1,19 @@
 package cma.api.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import java.time.LocalDate;
+@Entity
 public class Contact {
-    private int id;
+
+    @Id
+    private Integer id;
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
     private String address;
-    private int mobileNumber;
+    private Integer mobileNumber;
+
     public Contact() {
         id = 0;
         firstName = "";
@@ -16,7 +22,7 @@ public class Contact {
         address = "";
         mobileNumber = 0;
     }
-    public Contact(int id, String firstName, String lastName, LocalDate dateOfBirth, String address, int mobileNumber) {
+    public Contact(Integer id, String firstName, String lastName, LocalDate dateOfBirth, String address, Integer mobileNumber) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -24,7 +30,7 @@ public class Contact {
         this.address = address;
         this.mobileNumber = mobileNumber;
     }
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public void setFirstName(String firstName) {
@@ -39,7 +45,7 @@ public class Contact {
     public void setAddress(String address) {
         this.address = address;
     }
-    public void setMobileNumber(int mobileNumber) {
+    public void setMobileNumber(Integer mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
     public int getId() {
@@ -57,7 +63,7 @@ public class Contact {
     public String getAddress() {
         return address;
     }
-    public int getMobileNumber() {
+    public Integer getMobileNumber() {
         return mobileNumber;
     }
     @Override

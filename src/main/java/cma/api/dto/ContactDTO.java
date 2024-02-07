@@ -1,13 +1,16 @@
 package cma.api.dto;
 
 import java.time.LocalDate;
+
 public class ContactDTO {
-    private int id;
+
+    private Integer id;
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
     private String address;
-    private int mobileNumber;
+    private Integer mobileNumber;
+
     public ContactDTO(){
         id = 0;
         firstName = "";
@@ -16,7 +19,7 @@ public class ContactDTO {
         address = "";
         mobileNumber = 0;
     }
-    public ContactDTO(int id, String firstName, String lastName, LocalDate dateOfBirth, String address, int mobileNumber) {
+    public ContactDTO(Integer id, String firstName, String lastName, LocalDate dateOfBirth, String address, Integer mobileNumber) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -24,7 +27,7 @@ public class ContactDTO {
         this.address = address;
         this.mobileNumber = mobileNumber;
     }
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public void setFirstName(String firstName) {
@@ -39,7 +42,7 @@ public class ContactDTO {
     public void setAddress(String address) {
         this.address = address;
     }
-    public void setMobileNumber(int mobileNumber) {
+    public void setMobileNumber(Integer mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
     public int getId() {
@@ -59,5 +62,16 @@ public class ContactDTO {
     }
     public int getMobileNumber() {
         return mobileNumber;
+    }
+    @Override
+    public String toString() {
+        return "ContactDTO{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", address='" + address + '\'' +
+                ", mobileNumber=" + mobileNumber +
+                '}';
     }
 }
