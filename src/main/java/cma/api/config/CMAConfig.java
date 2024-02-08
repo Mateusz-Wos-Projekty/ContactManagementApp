@@ -13,8 +13,8 @@ import java.util.Optional;
 import java.util.function.Function;
 
 @Configuration
+@ComponentScan
 public class CMAConfig {
-
     @Bean
     ContactManagementAppRepository getContactManagementRepository(){
         return new ContactManagementAppRepository() {
