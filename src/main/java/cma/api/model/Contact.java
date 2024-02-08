@@ -1,17 +1,27 @@
 package cma.api.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 import java.time.LocalDate;
 @Entity
+@Table
 public class Contact {
 
     @Id
+    @Column
     private Integer id;
+    @Column
     private String firstName;
+    @Column
     private String lastName;
+    @Column
     private LocalDate dateOfBirth;
+    @Column
     private String address;
+    @Column
     private Integer mobileNumber;
 
     public Contact() {
