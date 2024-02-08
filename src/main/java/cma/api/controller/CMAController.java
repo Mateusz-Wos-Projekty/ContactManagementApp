@@ -33,8 +33,8 @@ public class CMAController {
 
         Contact newContact = cmaMapper.convertDTOToAnEntity(contactDto);
 
-        if (newContact == null) {
-            throw new ServerException("422 - Unprocessable Entity");
+        if (newContact.getFirstName() == null || newContact.getLastName() == null || newContact.getDateOfBirth() == null || newContact.getAddress() == null || newContact.getMobileNumber() == null) {
+            return new ResponseEntity<>(newContact, HttpStatus.BAD_REQUEST);
         } else {
             contactService.saveOrUpdateContact(newContact);
             return new ResponseEntity<>(newContact, HttpStatus.CREATED);
