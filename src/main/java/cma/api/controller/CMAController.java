@@ -5,7 +5,11 @@ import cma.api.mapper.CMAMapper;
 import cma.api.model.Contact;
 import cma.api.service.CMAService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.rmi.ServerException;
 
 @RestController
 public class CMAController {
@@ -22,11 +26,16 @@ public class CMAController {
     /*skupiam sie narazie na post mapping gdy będę mieć już działającą werjsę,
       przejdę do pozostałych endpointow */
     @PostMapping("/contacts")
-    public int saveContact(@RequestBody ContactDTO contactDto) {
+    public ResponseEntity<Contact> saveContact(@RequestBody ContactDTO contactDto) throws ServerException {
         CMAMapper newMapper = new CMAMapper();
         Contact newContact = newMapper.convertDTOToAnEntity(contactDto);
-        contactService.saveOrUpdateContact(newContact);
 
-        return newContact.getId();
+        if (newContact == null) {
+            throw new ServerException("422 - Unprocessable Entity");
+        } else {
+            contactService.saveOrUpdateContact(newContact);
+            return new ResponseEntity<>(newContact, HttpStatus.CREATED);
+        }
+
     }
 }
