@@ -19,11 +19,6 @@ import java.util.function.Function;
 @Configuration
 public class CMAConfig {
 
-    @Primary
-    @Bean
-    CMAService getMyService(ContactManagementAppRepository repository, CMAMapper mapper) {
-        return new CMAService(mapper,repository);
-    }
     @Bean
     CMAMapper getCMAMapper(){
         return new CMAMapper();
