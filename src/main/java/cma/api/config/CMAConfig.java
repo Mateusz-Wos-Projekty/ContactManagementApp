@@ -1,12 +1,8 @@
 package cma.api.config;
 
-import cma.api.mapper.CMAMapper;
 import cma.api.model.Contact;
 import cma.api.repository.ContactManagementAppRepository;
-import cma.api.service.CMAService;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.*;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,10 +15,6 @@ import java.util.function.Function;
 @Configuration
 public class CMAConfig {
 
-    @Bean
-    CMAMapper getCMAMapper(){
-        return new CMAMapper();
-    }
     @Bean
     ContactManagementAppRepository getContactManagementRepository(){
         return new ContactManagementAppRepository() {
