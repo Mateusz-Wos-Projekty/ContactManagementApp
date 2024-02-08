@@ -13,11 +13,14 @@ import java.rmi.ServerException;
 
 @RestController
 public class CMAController {
+
     private final  CMAService contactService;
+    private final CMAMapper cmaMapper;
 
     @Autowired
-    public CMAController(CMAService contactService) {
+    public CMAController(CMAService contactService,CMAMapper cmaMapper) {
         this.contactService = contactService;
+        this.cmaMapper = cmaMapper;
     }
     @GetMapping("/greetings")
     public String getHelloWorld(@RequestParam(value = "name", defaultValue = "Hello World!") String name ) {
@@ -27,8 +30,8 @@ public class CMAController {
       przejdę do pozostałych endpointow */
     @PostMapping("/contacts")
     public ResponseEntity<Contact> saveContact(@RequestBody ContactDTO contactDto) throws ServerException {
-        CMAMapper newMapper = new CMAMapper();
-        Contact newContact = newMapper.convertDTOToAnEntity(contactDto);
+
+        Contact newContact = cmaMapper.convertDTOToAnEntity(contactDto);
 
         if (newContact == null) {
             throw new ServerException("422 - Unprocessable Entity");
