@@ -1,27 +1,25 @@
 package cma.api.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 @Entity
-@Table(name= "contact")
+@Table(name= "CONTACT")
 public class Contact {
-
     @Id
-    @Column
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
-    @Column
+    @Column(name = "firstName")
     private String firstName;
-    @Column
+    @Column(name = "lastName")
     private String lastName;
-    @Column
+    @Column(name = "dateOfBirth")
     private LocalDate dateOfBirth;
-    @Column
+    @Column(name = "address")
     private String address;
-    @Column
+
+    @Column(name = "mobileNumber")
     private Integer mobileNumber;
 
     public Contact() {
