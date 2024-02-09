@@ -56,7 +56,7 @@ public class Contact {
     public void setMobileNumber(Integer mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
-    public int getId() {
+    public Integer getId() {
         return id;
     }
     public String getFirstName() {
