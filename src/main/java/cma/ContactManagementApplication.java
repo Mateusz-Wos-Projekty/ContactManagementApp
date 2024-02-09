@@ -7,9 +7,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @EnableWebMvc
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = "src.main.java.cma.api.repository")
+@EnableJpaRepositories
 public class ContactManagementApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(ContactManagementApplication.class, args);
 	}
