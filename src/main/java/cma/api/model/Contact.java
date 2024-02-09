@@ -1,13 +1,27 @@
-package CMA.API.Model;
+package cma.api.model;
+
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+@Entity
+@Table(name= "CONTACT")
 public class Contact {
-    private int id;
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "firstName")
     private String firstName;
+    @Column(name = "lastName")
     private String lastName;
+    @Column(name = "dateOfBirth")
     private LocalDate dateOfBirth;
+    @Column(name = "address")
     private String address;
-    private int mobileNumber;
+
+    @Column(name = "mobileNumber")
+    private Integer mobileNumber;
+
     public Contact() {
         id = 0;
         firstName = "";
@@ -16,12 +30,30 @@ public class Contact {
         address = "";
         mobileNumber = 0;
     }
-    public Contact(int id, String firstName, String lastName, LocalDate dateOfBirth, String address, int mobileNumber) {
+    public Contact(Integer id, String firstName, String lastName, LocalDate dateOfBirth, String address, Integer mobileNumber) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.address = address;
+        this.mobileNumber = mobileNumber;
+    }
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public void setMobileNumber(Integer mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
     public int getId() {
@@ -39,26 +71,8 @@ public class Contact {
     public String getAddress() {
         return address;
     }
-    public int getMobileNumber() {
+    public Integer getMobileNumber() {
         return mobileNumber;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-    public void setAddress(String address) {
-        this.address = address;
-    }
-    public void setMobileNumber(int mobileNumber) {
-        this.mobileNumber = mobileNumber;
     }
     @Override
     public String toString() {
