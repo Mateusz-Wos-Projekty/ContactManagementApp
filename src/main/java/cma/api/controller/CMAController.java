@@ -35,10 +35,10 @@ public class CMAController {
 
             Contact newContact = cmaMapper.convertDTOToAnEntity(contactDto);
             contactService.saveOrUpdateContact(newContact);
+
             ContactDTO newDTO = cmaMapper.convertAnEntityToDTO(newContact);
 
             return new ResponseEntity<>(newDTO, HttpStatus.CREATED);
         }
-
     }
 }
