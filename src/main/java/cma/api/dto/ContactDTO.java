@@ -60,7 +60,7 @@ public class ContactDTO {
     public String getAddress() {
         return address;
     }
-    public int getMobileNumber() {
+    public Integer getMobileNumber() {
         return mobileNumber;
     }
     @Override
