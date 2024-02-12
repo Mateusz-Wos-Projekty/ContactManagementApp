@@ -1,8 +1,8 @@
 package cma.api.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
+
 @Entity
 @Table(name= "CONTACT")
 public class Contact {
@@ -18,7 +18,6 @@ public class Contact {
     private LocalDate dateOfBirth;
     @Column(name = "address")
     private String address;
-
     @Column(name = "mobileNumber")
     private Integer mobileNumber;
 
