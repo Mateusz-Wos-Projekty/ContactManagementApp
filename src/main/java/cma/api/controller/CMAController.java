@@ -21,6 +21,25 @@ public class CMAController {
         this.contactService = contactService;
         this.cmaMapper = cmaMapper;
     }
+
+    /*skupiam sie narazie na post mapping gdy będę mieć już działającą werjsę,
+      przejdę do pozostałych endpointow */
+    @PostMapping("/contacts")
+    public ResponseEntity<ContactDTO> saveContact(@RequestBody ContactDTO contactDto) throws ServerException {
+
+        if (contactDto.getFirstName() == null || contactDto.getLastName() == null || contactDto.getDateOfBirth() == null || contactDto.getAddress() == null || contactDto.getMobileNumber() == null) {
+            return new ResponseEntity<>(contactDto, HttpStatus.BAD_REQUEST);
+        } else {
+
+            Contact newContact = cmaMapper.convertDTOToAnEntity(contactDto);
+
+            contactService.saveOrUpdateContact(newContact);
+
+            ContactDTO newDTO = cmaMapper.convertAnEntityToDTO(newContact);
+
+            return new ResponseEntity<>(newDTO, HttpStatus.CREATED);
+        }
+    }
     @GetMapping("/greetings")
     public String getHelloWorld(@RequestParam(value = "name", defaultValue = "Hello World!") String name ) {
         return name;
@@ -37,7 +56,6 @@ public class CMAController {
             return  new ResponseEntity<>(contactService.getContactById(id), HttpStatus.OK);
         }
     }
-
     @GetMapping("/contacts")
     public ResponseEntity<List<Contact>> getContacts() {
 
@@ -50,22 +68,45 @@ public class CMAController {
             return  new ResponseEntity<>(contactService.getContacts(), HttpStatus.OK);
         }
     }
-
-    /*skupiam sie narazie na post mapping gdy będę mieć już działającą werjsę,
-      przejdę do pozostałych endpointow */
-    @PostMapping("/contacts")
-    public ResponseEntity<ContactDTO> saveContact(@RequestBody ContactDTO contactDto) throws ServerException {
-
+    @PutMapping("/contact/{id}")
+    public ResponseEntity<ContactDTO> update(@PathVariable("id") int id, @RequestBody ContactDTO contactDto) {
         if (contactDto.getFirstName() == null || contactDto.getLastName() == null || contactDto.getDateOfBirth() == null || contactDto.getAddress() == null || contactDto.getMobileNumber() == null) {
-            return new ResponseEntity<>(contactDto, HttpStatus.BAD_REQUEST);
-        } else {
+                return new ResponseEntity<>(contactDto, HttpStatus.BAD_REQUEST);
+            } else {
 
-            Contact newContact = cmaMapper.convertDTOToAnEntity(contactDto);
-            contactService.saveOrUpdateContact(newContact);
+                Contact originalContact = contactService.getContactById(id);
 
-            ContactDTO newDTO = cmaMapper.convertAnEntityToDTO(newContact);
+                if(originalContact == null)
+                {
+                    return new ResponseEntity<>(contactDto, HttpStatus.NOT_FOUND);
+                }
 
-            return new ResponseEntity<>(newDTO, HttpStatus.CREATED);
+                Contact newContact = cmaMapper.convertDTOToAnEntity(contactDto);
+
+                originalContact.setFirstName(newContact.getFirstName());
+                originalContact.setLastName(newContact.getLastName());
+                originalContact.setDateOfBirth(newContact.getDateOfBirth());
+                originalContact.setAddress(newContact.getAddress());
+                originalContact.setMobileNumber(newContact.getMobileNumber());
+
+                contactService.saveOrUpdateContact(originalContact);
+
+                ContactDTO newDTO = cmaMapper.convertAnEntityToDTO(originalContact);
+
+                return new ResponseEntity<>(newDTO, HttpStatus.CREATED);
+            }
+    }
+
+    @DeleteMapping("/contact/{id}")
+    public ResponseEntity<Object> deleteContact(@PathVariable("id") int id) {
+
+        if(contactService.getContactById(id).getId() == null){
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }else{
+            contactService.deleteContact(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 }
