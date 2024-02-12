@@ -3,11 +3,18 @@ package cma.api.controller;
 import cma.api.dto.ContactDTO;
 import cma.api.mapper.CMAMapper;
 import cma.api.model.Contact;
+import cma.api.repository.ContactManagementAppRepository;
 import cma.api.service.CMAService;
+import com.turkraft.springfilter.boot.Filter;
+import jakarta.persistence.Entity;
+import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.awt.print.Pageable;
 import java.rmi.ServerException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +23,17 @@ import java.util.List;
 public class CMAController {
     private final  CMAService contactService;
     private final CMAMapper cmaMapper;
+    private final ContactManagementAppRepository repository;
     @Autowired
-    public CMAController(CMAService contactService,CMAMapper cmaMapper) {
+    public CMAController(CMAService contactService, CMAMapper cmaMapper, ContactManagementAppRepository repository) {
         this.contactService = contactService;
         this.cmaMapper = cmaMapper;
+        this.repository = repository;
     }
 
     /*skupiam sie narazie na post mapping gdy będę mieć już działającą werjsę,
       przejdę do pozostałych endpointow */
-    @PostMapping("/contacts")
+    @PostMapping("/contact")
     public ResponseEntity<ContactDTO> saveContact(@RequestBody ContactDTO contactDto) throws ServerException {
 
         if (contactDto.getFirstName() == null || contactDto.getLastName() == null || contactDto.getDateOfBirth() == null || contactDto.getAddress() == null || contactDto.getMobileNumber() == null) {
@@ -107,6 +116,17 @@ public class CMAController {
         }else{
             contactService.deleteContact(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
+    @GetMapping(value = "/search")
+    public ResponseEntity<List<Contact>> search(@Filter Specification<Contact> spec) {
+
+        if(repository.findAll(spec).isEmpty()){
+            List<Contact> emptyList = new ArrayList<>();
+            return new ResponseEntity<>(emptyList, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(repository.findAll(spec),HttpStatus.OK);
         }
     }
 }
