@@ -4,7 +4,6 @@ import cma.api.dto.CreateContactDTO;
 import cma.api.dto.ReturnContactDTO;
 import cma.api.model.Contact;
 import cma.api.dto.ContactDTO;
-import org.hibernate.mapping.List;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
