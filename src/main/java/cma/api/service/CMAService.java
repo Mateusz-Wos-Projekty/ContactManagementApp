@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Service
 public class CMAService {
 
@@ -24,6 +25,7 @@ public class CMAService {
     }
     public List<Contact> getContacts() {
         List<Contact> listOfContacts = new ArrayList<>();
+
         contactManagementAppRepository.findAll().forEach(listOfContacts::add);
 
         return listOfContacts;
