@@ -58,7 +58,7 @@ public class CMAController {
 
             ReturnContactDTO newReturnContactDTO = cmaMapper.convertAnEntityToReturnContactDTO(storeValue);
 
-            return new ResponseEntity<>(newReturnContactDTO,HttpStatus.OK);
+            return new ResponseEntity<>(newReturnContactDTO, HttpStatus.OK);
 
         } catch (ContactNotFoundException e) {
             return ResponseEntity.notFound().build();
@@ -72,7 +72,7 @@ public class CMAController {
 
             List<ReturnContactDTO> newReturnContactDTO = cmaMapper.convertAnEntityListToReturnContactDTOList(storeValue);
 
-            return new ResponseEntity<>(newReturnContactDTO,HttpStatus.OK);
+            return new ResponseEntity<>(newReturnContactDTO, HttpStatus.OK);
 
         } catch (ContactNotFoundException e) {
             List<ReturnContactDTO> newList = new ArrayList<>();
@@ -103,7 +103,7 @@ public class CMAController {
 
             ReturnContactDTO newReturnContactDTO = cmaMapper.convertAnEntityToReturnContactDTO(originalContact);
 
-            return new ResponseEntity<>(newReturnContactDTO,HttpStatus.OK);
+            return new ResponseEntity<>(newReturnContactDTO, HttpStatus.OK);
 
         } catch (ContactNotFoundException e) {
             return ResponseEntity.notFound().build();
@@ -129,8 +129,11 @@ public class CMAController {
 
         try {
 
-            repository.findAll(spec).isEmpty();
-            return ResponseEntity.ok().build();
+            var storeValue = repository.findAll(spec);
+
+            List<ReturnContactDTO> newReturnContactDTOList = cmaMapper.convertAnEntityListToReturnContactDTOList(storeValue);
+
+            return new ResponseEntity<>(newReturnContactDTOList, HttpStatus.OK);
 
         } catch (ContactNotFoundException e) {
 
