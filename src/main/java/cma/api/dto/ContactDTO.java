@@ -3,7 +3,6 @@ package cma.api.dto;
 import java.time.LocalDate;
 
 public class ContactDTO {
-
     private Integer id;
     private String firstName;
     private String lastName;
