@@ -30,54 +30,38 @@ public class CMAController {
     }
 
     @GetMapping("/greetings")
-    public String getHelloWorld(@RequestParam(value = "name", defaultValue = "Hello World!") String name) {
-        return name;
+    public List<Contact> getHelloWorld(String name) {
+
+        return contactService.findMobileNumberSevenSevenSeven();
     }
 
-    /*skupiam sie narazie na post mapping gdy będę mieć już działającą werjsę,
-      przejdę do pozostałych endpointow */
     @PostMapping("/contacts")
     public ResponseEntity<ReturnContactDTO> saveContact(@RequestBody CreateContactDTO contactDto) {
 
         if (contactDto.getFirstName() == null || contactDto.getLastName() == null || contactDto.getDateOfBirth() == null || contactDto.getAddress() == null || contactDto.getMobileNumber() == null) {
-            ReturnContactDTO newReturnContactDTO = cmaMapper.convertCreateContactDTOToReturnContactDTO(contactDto);
-            return new ResponseEntity<>(newReturnContactDTO, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(cmaMapper.convertCreateContactDTOToReturnContactDTO(contactDto), HttpStatus.BAD_REQUEST);
         }
 
-        Contact newContact = cmaMapper.convertCreateContactDTOToAnEntity(contactDto);
-        contactService.saveOrUpdateContact(newContact);
-        ReturnContactDTO newDTO = cmaMapper.convertAnEntityToReturnContactDTO(newContact);
-
-        return new ResponseEntity<>(newDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(contactService.addAContactToADatabaseAndReturnReturnContactDTOEntity(contactDto), HttpStatus.CREATED);
     }
 
     @GetMapping("/contacts/{id}")
     public ResponseEntity<ReturnContactDTO> getContact(@PathVariable("id") Integer id) {
         try {
-            var storeValue = contactService.getContactById(id);
-
-            ReturnContactDTO newReturnContactDTO = cmaMapper.convertAnEntityToReturnContactDTO(storeValue);
-
-            return new ResponseEntity<>(newReturnContactDTO, HttpStatus.OK);
-
-        } catch (ContactNotFoundException e) {
+            return new ResponseEntity<>(contactService.getContactByIdAndReturnReturnContactDTOEntity(id), HttpStatus.OK);
+        } catch (ContactNotFoundException e ) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @GetMapping("/contacts")
     public ResponseEntity<List<ReturnContactDTO>> getContacts() {
-        try {
-            var storeValue = contactService.getContacts();
 
-            List<ReturnContactDTO> newReturnContactDTO = cmaMapper.convertAnEntityListToReturnContactDTOList(storeValue);
-
-            return new ResponseEntity<>(newReturnContactDTO, HttpStatus.OK);
-
-        } catch (ContactNotFoundException e) {
+        if (contactService.getContacts().isEmpty()) {
             List<ReturnContactDTO> newList = new ArrayList<>();
             return ResponseEntity.ok().body(newList);
         }
+        return new ResponseEntity<>(contactService.getContactsFromTheDatabaseAndReturnAListOfReturnContactDTO(), HttpStatus.OK);
     }
 
     @PutMapping("/contacts/{id}")
@@ -89,21 +73,7 @@ public class CMAController {
                 return ResponseEntity.badRequest().build();
             }
 
-            var originalContact = contactService.getContactById(id);
-
-            Contact newContact = cmaMapper.convertCreateContactDTOToAnEntity(contactDto);
-
-            originalContact.setFirstName(newContact.getFirstName());
-            originalContact.setLastName(newContact.getLastName());
-            originalContact.setDateOfBirth(newContact.getDateOfBirth());
-            originalContact.setAddress(newContact.getAddress());
-            originalContact.setMobileNumber(newContact.getMobileNumber());
-
-            contactService.saveOrUpdateContact(originalContact);
-
-            ReturnContactDTO newReturnContactDTO = cmaMapper.convertAnEntityToReturnContactDTO(originalContact);
-
-            return new ResponseEntity<>(newReturnContactDTO, HttpStatus.OK);
+            return new ResponseEntity<>(contactService.updateAnExistingContactAndReturnReturnContactDTOEntity(id,contactDto), HttpStatus.OK);
 
         } catch (ContactNotFoundException e) {
             return ResponseEntity.notFound().build();
@@ -114,7 +84,6 @@ public class CMAController {
     public ResponseEntity<Void> deleteContact(@PathVariable("id") int id) {
 
         try {
-            contactService.getContactById(id).getId();
             contactService.deleteContact(id);
             return ResponseEntity.noContent().build();
 
@@ -124,21 +93,20 @@ public class CMAController {
 
     }
 
-    @GetMapping("/search/contacts")
+    @GetMapping("contacts/turkraft-imported-library/filtered-contacts/")
     public ResponseEntity<List<ReturnContactDTO>> search(@Filter Specification<Contact> spec) {
 
         try {
-
-            var storeValue = repository.findAll(spec);
-
-            List<ReturnContactDTO> newReturnContactDTOList = cmaMapper.convertAnEntityListToReturnContactDTOList(storeValue);
-
-            return new ResponseEntity<>(newReturnContactDTOList, HttpStatus.OK);
-
+            return new ResponseEntity<>(contactService.filterTheEntitiesTakingIntoAccountAnAttributeAndReturnAListOfReturnContactDTO(spec), HttpStatus.OK);
         } catch (ContactNotFoundException e) {
-
             List<ReturnContactDTO> newList = new ArrayList<>();
             return ResponseEntity.ok().body(newList);
         }
+    }
+
+    @GetMapping("contacts?")
+    public ResponseEntity<List<ReturnContactDTO>> searchUsingJpa(String firstName, String lastName){
+
+        return new ResponseEntity<>(contactService.filterAContactByFirstNameAndLastName(firstName,lastName), HttpStatus.OK);
     }
 }
