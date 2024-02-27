@@ -2,8 +2,6 @@ package cma.api.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-
-
 @Entity
 @Table(name= "CONTACT")
 public class Contact {
