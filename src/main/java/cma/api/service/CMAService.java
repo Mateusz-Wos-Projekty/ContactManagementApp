@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Service
 public class CMAService {
+
     private final CMAMapper cmaMapper;
     private final ContactManagementAppRepository contactManagementAppRepository;
     private Contact singleContact;
@@ -25,28 +25,23 @@ public class CMAService {
         this.cmaMapper = cmaMapper;
         this.contactManagementAppRepository = contactManagementAppRepository;
     }
-
-    public List<Contact> getContacts() {
+    public List<Contact> getContactsFromRepository() {
         List<Contact> listOfContacts = new ArrayList<>();
 
         contactManagementAppRepository.findAll().forEach(listOfContacts::add);
 
         return listOfContacts;
     }
-
     public Contact getContactById(int id) {
         return contactManagementAppRepository.findById(id).orElseThrow(() -> new ContactNotFoundException("Contact Not Found"));
     }
-
     public Contact saveOrUpdateContact(Contact contact) {
         return contactManagementAppRepository.save(contact);
     }
-
     public void deleteContact(int id) {
         contactManagementAppRepository.deleteById(id);
     }
-
-    public ReturnContactDTO updateAnExistingContactAndReturnReturnContactDTOEntity(int id, CreateContactDTO contactDTO) {
+    public ReturnContactDTO updateContact(int id, CreateContactDTO contactDTO) {
 
         var originalContact = getContactById(id);
 
@@ -63,54 +58,49 @@ public class CMAService {
         return cmaMapper.convertAnEntityToReturnContactDTO(originalContact);
 
     }
-
-    public ReturnContactDTO addAContactToADatabaseAndReturnReturnContactDTOEntity(CreateContactDTO contactDTO) {
+    public ReturnContactDTO saveContact(CreateContactDTO contactDTO) {
 
         Contact newContact = cmaMapper.convertCreateContactDTOToAnEntity(contactDTO);
         saveOrUpdateContact(newContact);
 
         return cmaMapper.convertAnEntityToReturnContactDTO(newContact);
     }
+    public List<ReturnContactDTO> getContacts() {
 
-    public List<ReturnContactDTO> getContactsFromTheDatabaseAndReturnAListOfReturnContactDTO() {
-
-        var storeValue = getContacts();
-
+        var storeValue = getContactsFromRepository();
         return cmaMapper.convertAnEntityListToReturnContactDTOList(storeValue);
     }
-
-    public ReturnContactDTO getContactByIdAndReturnReturnContactDTOEntity(int id) {
+    public ReturnContactDTO getContact(int id) {
 
         var storeValue = getContactById(id);
-
         return cmaMapper.convertAnEntityToReturnContactDTO(storeValue);
     }
-
-    public List<ReturnContactDTO> filterTheEntitiesTakingIntoAccountAnAttributeAndReturnAListOfReturnContactDTO(Specification<Contact> spec) {
+    public List<ReturnContactDTO> filterContacts(Specification<Contact> spec) {
 
         var storeValue = contactManagementAppRepository.findAll(spec);
         return cmaMapper.convertAnEntityListToReturnContactDTOList(storeValue);
     }
+    public List<ReturnContactDTO> filterContactsByFirstNameAndLastName(String firstName, String lastName) {
 
-    public List<Contact> findMaceWindu(){
-
-        return contactManagementAppRepository.firstNameAndLastName("Mace","Windu");
-    }
-
-    public List<Contact> findAnakinSkywalker(){
-
-        return contactManagementAppRepository.firstNameAndLastName("Anakin","Skywalker");
-    }
-
-    public List<Contact> findMobileNumberSevenSevenSeven(){
-
-        return contactManagementAppRepository.mobileNumber(777);
-    }
-
-    public List<ReturnContactDTO> filterAContactByFirstNameAndLastName(String firstName, String lastName){
-
-        var listOfContactsFilteredByFirstNameAndLastName = contactManagementAppRepository.firstNameAndLastName(firstName,lastName);
-
+        var listOfContactsFilteredByFirstNameAndLastName = contactManagementAppRepository.findByFirstNameAndLastName(firstName, lastName);
         return cmaMapper.convertAnEntityListToReturnContactDTOList(listOfContactsFilteredByFirstNameAndLastName);
+    }
+
+    public List<ReturnContactDTO> filterContactsByFirstName(String firstName) {
+
+        var listOfContactsFilteredByFirstName= contactManagementAppRepository.findByFirstName(firstName);
+        return cmaMapper.convertAnEntityListToReturnContactDTOList(listOfContactsFilteredByFirstName);
+    }
+
+    public List<ReturnContactDTO> filterContactsByLastName(String lastName) {
+
+        var listOfContactsFilteredByLastName = contactManagementAppRepository.findByLastName(lastName);
+        return cmaMapper.convertAnEntityListToReturnContactDTOList(listOfContactsFilteredByLastName);
+    }
+
+    public List<ReturnContactDTO> filterContactsWithoutAFilter(){
+
+        var listOfContactsFilteredWithoutAFilter = contactManagementAppRepository.findBy();
+        return cmaMapper.convertAnEntityListToReturnContactDTOList(listOfContactsFilteredWithoutAFilter);
     }
 }
