@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 
+
 @SpringBootTest(classes = {Contact.class, ContactDTO.class})
 class DemoApplicationTests {
-
 	@Test
 	public void CMAMapperDTOToEntityConversionTest() {
 		CMAMapper newCMAMapper = new CMAMapper();
