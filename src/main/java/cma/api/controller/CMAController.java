@@ -28,42 +28,31 @@ public class CMAController {
         this.cmaMapper = cmaMapper;
         this.repository = repository;
     }
-
     @GetMapping("/greetings")
-    public List<Contact> getHelloWorld(String name) {
-
-        return contactService.findMobileNumberSevenSevenSeven();
+    public String getHelloWorld(String name) {
+        return name;
     }
-
     @PostMapping("/contacts")
     public ResponseEntity<ReturnContactDTO> saveContact(@RequestBody CreateContactDTO contactDto) {
 
         if (contactDto.getFirstName() == null || contactDto.getLastName() == null || contactDto.getDateOfBirth() == null || contactDto.getAddress() == null || contactDto.getMobileNumber() == null) {
-            return new ResponseEntity<>(cmaMapper.convertCreateContactDTOToReturnContactDTO(contactDto), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
-
-        return new ResponseEntity<>(contactService.addAContactToADatabaseAndReturnReturnContactDTOEntity(contactDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(contactService.saveContact(contactDto), HttpStatus.CREATED);
     }
-
     @GetMapping("/contacts/{id}")
     public ResponseEntity<ReturnContactDTO> getContact(@PathVariable("id") Integer id) {
         try {
-            return new ResponseEntity<>(contactService.getContactByIdAndReturnReturnContactDTOEntity(id), HttpStatus.OK);
-        } catch (ContactNotFoundException e ) {
+            return new ResponseEntity<>(contactService.getContact(id), HttpStatus.OK);
+        } catch (ContactNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
-
     @GetMapping("/contacts")
     public ResponseEntity<List<ReturnContactDTO>> getContacts() {
 
-        if (contactService.getContacts().isEmpty()) {
-            List<ReturnContactDTO> newList = new ArrayList<>();
-            return ResponseEntity.ok().body(newList);
-        }
-        return new ResponseEntity<>(contactService.getContactsFromTheDatabaseAndReturnAListOfReturnContactDTO(), HttpStatus.OK);
+        return new ResponseEntity<>(contactService.getContacts(), HttpStatus.OK);
     }
-
     @PutMapping("/contacts/{id}")
     public ResponseEntity<ReturnContactDTO> update(@PathVariable("id") int id, @RequestBody CreateContactDTO contactDto) {
 
@@ -73,13 +62,12 @@ public class CMAController {
                 return ResponseEntity.badRequest().build();
             }
 
-            return new ResponseEntity<>(contactService.updateAnExistingContactAndReturnReturnContactDTOEntity(id,contactDto), HttpStatus.OK);
+            return new ResponseEntity<>(contactService.updateContact(id, contactDto), HttpStatus.OK);
 
         } catch (ContactNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
-
     @DeleteMapping("/contacts/{id}")
     public ResponseEntity<Void> deleteContact(@PathVariable("id") int id) {
 
@@ -92,21 +80,31 @@ public class CMAController {
         }
 
     }
+    @GetMapping("/contacts/turkraft-imported-library/filtered-contacts")
+    public ResponseEntity<List<ReturnContactDTO>> searchForContacts(@Filter Specification<Contact> spec) {
+            return new ResponseEntity<>(contactService.filterContacts(spec), HttpStatus.OK);
+    }
+    @GetMapping("/contacts?firstname={firstName}&lastname={lastName}")
+    public ResponseEntity<List<ReturnContactDTO>> searchForContactsByFirstNameAndLastName(@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName) {
 
-    @GetMapping("contacts/turkraft-imported-library/filtered-contacts/")
-    public ResponseEntity<List<ReturnContactDTO>> search(@Filter Specification<Contact> spec) {
-
-        try {
-            return new ResponseEntity<>(contactService.filterTheEntitiesTakingIntoAccountAnAttributeAndReturnAListOfReturnContactDTO(spec), HttpStatus.OK);
-        } catch (ContactNotFoundException e) {
-            List<ReturnContactDTO> newList = new ArrayList<>();
-            return ResponseEntity.ok().body(newList);
-        }
+        return new ResponseEntity<>(contactService.filterContactsByFirstNameAndLastName(firstName, lastName), HttpStatus.OK);
     }
 
-    @GetMapping("contacts?")
-    public ResponseEntity<List<ReturnContactDTO>> searchUsingJpa(String firstName, String lastName){
+    @GetMapping("/contacts/filter-by-first-name?firstname={firstName}")
+    public ResponseEntity<List<ReturnContactDTO>> searchForContactsByFirstName(@PathVariable("firstName") String firstName) {
 
-        return new ResponseEntity<>(contactService.filterAContactByFirstNameAndLastName(firstName,lastName), HttpStatus.OK);
+        return new ResponseEntity<>(contactService.filterContactsByFirstName(firstName), HttpStatus.OK);
+    }
+
+    @GetMapping("/contacts?lastname={lastName}")
+    public ResponseEntity<List<ReturnContactDTO>> searchForContactsByLastName(@PathVariable("lastName") String lastName) {
+
+        return new ResponseEntity<>(contactService.filterContactsByLastName(lastName), HttpStatus.OK);
+    }
+
+    @GetMapping("/contacts/search-for-contacts-without-a-filter")
+    public ResponseEntity<List<ReturnContactDTO>> searchForContactsWithoutAFilter() {
+
+        return new ResponseEntity<>(contactService.filterContactsWithoutAFilter(), HttpStatus.OK);
     }
 }
