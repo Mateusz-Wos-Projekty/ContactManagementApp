@@ -79,29 +79,29 @@ public class CMAController {
         }
 
     }
-    @GetMapping("/contacts/turkraft-imported-library/filtered-contacts")
+    @GetMapping("/contacts/filtered-contacts")
     public ResponseEntity<List<ReturnContactDTO>> searchForContacts(@Filter Specification<Contact> spec) {
             return new ResponseEntity<>(contactService.filterContacts(spec), HttpStatus.OK);
     }
-    @GetMapping("/contacts?firstname={firstName}&lastname={lastName}")
-    public ResponseEntity<List<ReturnContactDTO>> searchForContactsByFirstNameAndLastName(@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName) {
+    @GetMapping("/contacts/search-for-contacts-by-first-and-last-name")
+    public ResponseEntity<List<ReturnContactDTO>> searchForContactsByFirstNameAndLastName(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
 
         return new ResponseEntity<>(contactService.filterContactsByFirstNameAndLastName(firstName, lastName), HttpStatus.OK);
     }
 
-    @GetMapping("/contacts/filter-by-first-name?firstname={firstName}")
-    public ResponseEntity<List<ReturnContactDTO>> searchForContactsByFirstName(@PathVariable("firstName") String firstName) {
+    @GetMapping("/contacts/search-for-contacts-by-first-name")
+    public ResponseEntity<List<ReturnContactDTO>> searchForContactsByFirstName(@RequestParam("firstName") String firstName) {
 
         return new ResponseEntity<>(contactService.filterContactsByFirstName(firstName), HttpStatus.OK);
     }
 
-    @GetMapping("/contacts?lastname={lastName}")
-    public ResponseEntity<List<ReturnContactDTO>> searchForContactsByLastName(@PathVariable("lastName") String lastName) {
+    @GetMapping("/contacts/search-for-contacts-by-last-name")
+    public ResponseEntity<List<ReturnContactDTO>> searchForContactsByLastName(@RequestParam("lastName") String lastName) {
 
         return new ResponseEntity<>(contactService.filterContactsByLastName(lastName), HttpStatus.OK);
     }
 
-    @GetMapping("/contacts/search-for-contacts-without-a-filter")
+    @GetMapping("/contacts/search-for-contacts-without-a-filter-applied")
     public ResponseEntity<List<ReturnContactDTO>> searchForContactsWithoutAFilter() {
 
         return new ResponseEntity<>(contactService.filterContactsWithoutAFilter(), HttpStatus.OK);
