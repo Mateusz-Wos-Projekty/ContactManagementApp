@@ -2,7 +2,11 @@ package cma.api.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+
 @Entity
+@NamedQuery(name = "findByFirstName", query = "from Contact u where u.firstName = :firstName")
+@NamedQuery(name = "findByLastName", query = "from Contact u where u.lastName = :lastName")
+@NamedQuery(name = "findByFirstNameAndLastName", query = "from Contact u where u.firstName = :firstName and u.lastName = :lastName")
 @Table(name= "CONTACT")
 public class Contact {
     @Id
