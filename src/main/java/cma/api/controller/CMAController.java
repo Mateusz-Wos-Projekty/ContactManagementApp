@@ -28,8 +28,8 @@ public class CMAController {
         this.repository = repository;
     }
     @GetMapping("/greetings")
-    public String getHelloWorld(String name) {
-        return name;
+    public List<ReturnContactDTO> getHelloWorld(String name) {
+        return contactService.filterContactsUsingNamedQuries("Master","Yoda");
     }
     @PostMapping("/contacts")
     public ResponseEntity<ReturnContactDTO> saveContact(@RequestBody CreateContactDTO contactDto) {
@@ -79,31 +79,16 @@ public class CMAController {
         }
 
     }
-    @GetMapping("/contacts/filtered-contacts")
+    @GetMapping("/contacts/method-one/filtered-contacts")
     public ResponseEntity<List<ReturnContactDTO>> searchForContacts(@Filter Specification<Contact> spec) {
             return new ResponseEntity<>(contactService.filterContacts(spec), HttpStatus.OK);
     }
-    @GetMapping("/contacts/search-for-contacts-by-first-and-last-name")
-    public ResponseEntity<List<ReturnContactDTO>> searchForContactsByFirstNameAndLastName(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
-
-        return new ResponseEntity<>(contactService.filterContactsByFirstNameAndLastName(firstName, lastName), HttpStatus.OK);
+    @GetMapping("/contacts/method-two/filtered-contacts")
+    public ResponseEntity<List<ReturnContactDTO>> searchForContacts(@RequestParam(value="firstName", required = false) String firstName, @RequestParam(value = "lastName", required = false) String lastName) {
+        return new ResponseEntity<>(contactService.filterContactsUsingJPAQueryMethods(firstName,lastName), HttpStatus.OK);
     }
-
-    @GetMapping("/contacts/search-for-contacts-by-first-name")
-    public ResponseEntity<List<ReturnContactDTO>> searchForContactsByFirstName(@RequestParam("firstName") String firstName) {
-
-        return new ResponseEntity<>(contactService.filterContactsByFirstName(firstName), HttpStatus.OK);
-    }
-
-    @GetMapping("/contacts/search-for-contacts-by-last-name")
-    public ResponseEntity<List<ReturnContactDTO>> searchForContactsByLastName(@RequestParam("lastName") String lastName) {
-
-        return new ResponseEntity<>(contactService.filterContactsByLastName(lastName), HttpStatus.OK);
-    }
-
-    @GetMapping("/contacts/search-for-contacts-without-a-filter-applied")
-    public ResponseEntity<List<ReturnContactDTO>> searchForContactsWithoutAFilter() {
-
-        return new ResponseEntity<>(contactService.filterContactsWithoutAFilter(), HttpStatus.OK);
+    @GetMapping("/contacts/method-three/filtered-contacts")
+    public ResponseEntity<List<ReturnContactDTO>> searchForContactsTwo(@RequestParam(value="firstName", required = false) String firstName, @RequestParam(value = "lastName", required = false) String lastName) {
+        return new ResponseEntity<>(contactService.filterContactsWithoutDeclaringJPAMethods(firstName,lastName), HttpStatus.OK);
     }
 }
