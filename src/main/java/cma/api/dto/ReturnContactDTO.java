@@ -26,6 +26,10 @@ public class ReturnContactDTO {
         this.address = address;
         this.mobileNumber = mobileNumber;
     }
+
+    public ReturnContactDTO(Object o) {
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
