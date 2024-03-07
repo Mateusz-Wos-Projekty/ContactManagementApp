@@ -9,7 +9,9 @@ import java.util.List;
 @Repository
 public interface ContactManagementAppRepository extends JpaRepository<Contact, Integer>, JpaSpecificationExecutor<Contact> {
     List<Contact> findByFirstNameAndLastName(String firstName, String lastname);
+
     List<Contact> findByFirstName(String firstName);
+
     List<Contact> findByLastName(String lastName);
 
 }
