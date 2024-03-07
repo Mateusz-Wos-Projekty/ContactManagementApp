@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Service
 public class CMAService {
@@ -183,12 +182,11 @@ public class CMAService {
 
     public List<ReturnContactDTO> filterContactsUsingNamedQuries(String firstName, String lastName) {
 
-        List<ReturnContactDTO> endResult = null;
+        List endResult = null;
 
         if (firstName == null && lastName == null) {
 
-            endResult = cmaMapper.convertAnEntityListToReturnContactDTOList(contactManagementAppRepository.findAll());
-
+            endResult = contactManagementAppRepository.findAll();
 
         } else if (firstName != null && lastName == null) {
 
@@ -198,10 +196,7 @@ public class CMAService {
 
             queryEmployeesByFirstName.setParameter("firstName", firstName);
 
-            List<ReturnContactDTO> converted = (List<ReturnContactDTO>) queryEmployeesByFirstName.getResultList().stream().map(ReturnContactDTO::new).collect(Collectors.toList());
-
-            endResult = cmaMapper.convertAnEntityListToReturnContactDTOList(queryEmployeesByFirstName.getResultList());
-
+            endResult = queryEmployeesByFirstName.getResultList();
 
         } else if (firstName == null) {
 
@@ -210,8 +205,7 @@ public class CMAService {
             );
 
             queryEmployeesByLastName.setParameter("lastName", lastName);
-            endResult = cmaMapper.convertAnEntityListToReturnContactDTOList(queryEmployeesByLastName.getResultList());
-
+            endResult = queryEmployeesByLastName.getResultList();
 
         } else if (firstName != null && lastName != null) {
 
@@ -219,14 +213,11 @@ public class CMAService {
                     "findByFirstNameAndLastName"
             );
 
-            queryEmployeesByFirstNameAndLastName.setParameter("firstName", lastName).setParameter("lastName", lastName);
+            queryEmployeesByFirstNameAndLastName.setParameter("firstName", firstName).setParameter("lastName", lastName);
 
-            endResult = cmaMapper.convertAnEntityListToReturnContactDTOList(queryEmployeesByFirstNameAndLastName.getResultList());
+            endResult = queryEmployeesByFirstNameAndLastName.getResultList();
 
         }
-
-        return endResult;
-
+        return cmaMapper.convertAnEntityListToReturnContactDTOList(endResult);
     }
-
 }
