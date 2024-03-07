@@ -12,7 +12,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 @Service
 public class CMAService {
@@ -134,90 +133,5 @@ public class CMAService {
         }
 
         return result;
-    }
-
-    public List<ReturnContactDTO> filterContactsWithoutDeclaringJPAMethods(String firstName, String lastName) {
-
-        List<ReturnContactDTO> endResult = null;
-
-        if (firstName == null && lastName == null) {
-
-            endResult = cmaMapper.convertAnEntityListToReturnContactDTOList(contactManagementAppRepository.findAll());
-
-        } else if (firstName != null && lastName == null) {
-
-            List<Contact> result = contactManagementAppRepository.findAll();
-
-            List<ReturnContactDTO> newContactDTOList = cmaMapper.convertAnEntityListToReturnContactDTOList(result);
-
-            Predicate<ReturnContactDTO> findByFirstName = i -> i.getFirstName().equals(firstName);
-
-            endResult = newContactDTOList.stream().filter(findByFirstName).toList();
-
-        } else if (firstName == null) {
-
-            List<Contact> result = contactManagementAppRepository.findAll();
-
-            List<ReturnContactDTO> newContactDTOList = cmaMapper.convertAnEntityListToReturnContactDTOList(result);
-
-            Predicate<ReturnContactDTO> findByLastName = i -> i.getLastName().equals(lastName);
-
-            endResult = newContactDTOList.stream().filter(findByLastName).toList();
-
-        } else if (firstName != null && lastName != null) {
-
-            List<Contact> result = contactManagementAppRepository.findAll();
-
-            List<ReturnContactDTO> newContactDTOList = cmaMapper.convertAnEntityListToReturnContactDTOList(result);
-
-            Predicate<ReturnContactDTO> findByFirstName = i -> i.getFirstName().equals(firstName);
-            Predicate<ReturnContactDTO> findByLastName = i -> i.getLastName().equals(lastName);
-
-            endResult = newContactDTOList.stream().filter(findByFirstName).filter(findByLastName).toList();
-        }
-
-
-        return endResult;
-    }
-
-    public List<ReturnContactDTO> filterContactsUsingNamedQuries(String firstName, String lastName) {
-
-        List endResult = null;
-
-        if (firstName == null && lastName == null) {
-
-            endResult = contactManagementAppRepository.findAll();
-
-        } else if (firstName != null && lastName == null) {
-
-            Query queryEmployeesByFirstName = entityManager.createNamedQuery(
-                    "findByFirstName"
-            );
-
-            queryEmployeesByFirstName.setParameter("firstName", firstName);
-
-            endResult = queryEmployeesByFirstName.getResultList();
-
-        } else if (firstName == null) {
-
-            Query queryEmployeesByLastName = entityManager.createNamedQuery(
-                    "findByLastName"
-            );
-
-            queryEmployeesByLastName.setParameter("lastName", lastName);
-            endResult = queryEmployeesByLastName.getResultList();
-
-        } else if (firstName != null && lastName != null) {
-
-            Query queryEmployeesByFirstNameAndLastName = entityManager.createNamedQuery(
-                    "findByFirstNameAndLastName"
-            );
-
-            queryEmployeesByFirstNameAndLastName.setParameter("firstName", firstName).setParameter("lastName", lastName);
-
-            endResult = queryEmployeesByFirstNameAndLastName.getResultList();
-
-        }
-        return cmaMapper.convertAnEntityListToReturnContactDTOList(endResult);
     }
 }
