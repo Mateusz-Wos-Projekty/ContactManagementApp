@@ -27,10 +27,12 @@ public class CMAController {
         this.cmaMapper = cmaMapper;
         this.repository = repository;
     }
+
     @GetMapping("/greetings")
-    public List<ReturnContactDTO> getHelloWorld(String name) {
-        return contactService.filterContactsUsingNamedQuries("Master","Yoda");
+    public List<ReturnContactDTO> getHelloWorld() {
+        return contactService.filterContactsUsingNamedQuries("Master", "Yoda");
     }
+
     @PostMapping("/contacts")
     public ResponseEntity<ReturnContactDTO> saveContact(@RequestBody CreateContactDTO contactDto) {
 
@@ -39,6 +41,7 @@ public class CMAController {
         }
         return new ResponseEntity<>(contactService.saveContact(contactDto), HttpStatus.CREATED);
     }
+
     @GetMapping("/contacts/{id}")
     public ResponseEntity<ReturnContactDTO> getContact(@PathVariable("id") Integer id) {
         try {
@@ -47,11 +50,13 @@ public class CMAController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @GetMapping("/contacts")
     public ResponseEntity<List<ReturnContactDTO>> getContacts() {
 
         return new ResponseEntity<>(contactService.getContacts(), HttpStatus.OK);
     }
+
     @PutMapping("/contacts/{id}")
     public ResponseEntity<ReturnContactDTO> update(@PathVariable("id") int id, @RequestBody CreateContactDTO contactDto) {
 
@@ -67,6 +72,7 @@ public class CMAController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @DeleteMapping("/contacts/{id}")
     public ResponseEntity<Void> deleteContact(@PathVariable("id") int id) {
 
@@ -79,16 +85,24 @@ public class CMAController {
         }
 
     }
+
     @GetMapping("/contacts/method-one/filtered-contacts")
-    public ResponseEntity<List<ReturnContactDTO>> searchForContacts(@Filter Specification<Contact> spec) {
-            return new ResponseEntity<>(contactService.filterContacts(spec), HttpStatus.OK);
+    public ResponseEntity<List<ReturnContactDTO>> searchForContactsOne(@Filter Specification<Contact> spec) {
+        return new ResponseEntity<>(contactService.filterContacts(spec), HttpStatus.OK);
     }
+
     @GetMapping("/contacts/method-two/filtered-contacts")
-    public ResponseEntity<List<ReturnContactDTO>> searchForContacts(@RequestParam(value="firstName", required = false) String firstName, @RequestParam(value = "lastName", required = false) String lastName) {
-        return new ResponseEntity<>(contactService.filterContactsUsingJPAQueryMethods(firstName,lastName), HttpStatus.OK);
+    public ResponseEntity<List<ReturnContactDTO>> searchForContactsTwo(@RequestParam(value = "firstName", required = false) String firstName, @RequestParam(value = "lastName", required = false) String lastName) {
+        return new ResponseEntity<>(contactService.filterContactsUsingJPAQueryMethods(firstName, lastName), HttpStatus.OK);
     }
+
     @GetMapping("/contacts/method-three/filtered-contacts")
-    public ResponseEntity<List<ReturnContactDTO>> searchForContactsTwo(@RequestParam(value="firstName", required = false) String firstName, @RequestParam(value = "lastName", required = false) String lastName) {
-        return new ResponseEntity<>(contactService.filterContactsWithoutDeclaringJPAMethods(firstName,lastName), HttpStatus.OK);
+    public ResponseEntity<List<ReturnContactDTO>> searchForContactsThree(@RequestParam(value = "firstName", required = false) String firstName, @RequestParam(value = "lastName", required = false) String lastName) {
+        return new ResponseEntity<>(contactService.filterContactsWithoutDeclaringJPAMethods(firstName, lastName), HttpStatus.OK);
+    }
+
+    @GetMapping("/contacts/method-four/filtered-contacts")
+    public ResponseEntity<List<ReturnContactDTO>> searchForContactsFour(@RequestParam(value = "firstName", required = false) String firstName, @RequestParam(value = "lastName", required = false) String lastName) {
+        return new ResponseEntity<>(contactService.filterContactsUsingNamedQuries(firstName, lastName), HttpStatus.OK);
     }
 }
