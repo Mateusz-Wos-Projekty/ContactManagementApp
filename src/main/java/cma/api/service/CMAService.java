@@ -6,7 +6,6 @@ import cma.api.exceptions.ContactNotFoundException;
 import cma.api.mapper.CMAMapper;
 import cma.api.model.Contact;
 import cma.api.repository.ContactManagementAppRepository;
-import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -15,8 +14,6 @@ import java.util.List;
 
 @Service
 public class CMAService {
-    @PersistenceContext
-    EntityManager entityManager;
 
     private final CMAMapper cmaMapper;
     private final ContactManagementAppRepository contactManagementAppRepository;
