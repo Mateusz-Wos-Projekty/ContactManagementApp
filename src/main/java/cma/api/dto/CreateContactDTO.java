@@ -2,7 +2,8 @@ package cma.api.dto;
 
 import java.time.LocalDate;
 
-public class ContactDTO {
+public class CreateContactDTO {
+
     private Integer id;
     private String firstName;
     private String lastName;
@@ -10,7 +11,7 @@ public class ContactDTO {
     private String address;
     private Integer mobileNumber;
 
-    public ContactDTO() {
+    public CreateContactDTO() {
         id = 0;
         firstName = "";
         lastName = "";
@@ -19,7 +20,7 @@ public class ContactDTO {
         mobileNumber = 0;
     }
 
-    public ContactDTO(Integer id, String firstName, String lastName, LocalDate dateOfBirth, String address, Integer mobileNumber) {
+    public CreateContactDTO(Integer id, String firstName, String lastName, LocalDate dateOfBirth, String address, Integer mobileNumber) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

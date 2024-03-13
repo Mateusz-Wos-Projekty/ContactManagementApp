@@ -1,6 +1,7 @@
 package cma.api.exceptions;
-public class ContactNotFoundException extends  RuntimeException  {
+
+public class ContactNotFoundException extends RuntimeException {
     public ContactNotFoundException(String errorMessage) {
-            super(errorMessage);
+        super(errorMessage);
     }
 }

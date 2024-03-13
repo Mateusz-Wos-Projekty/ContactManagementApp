@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @SpringBootApplication
 @EnableJpaRepositories
 public class ContactManagementApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(ContactManagementApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ContactManagementApplication.class, args);
+    }
 }
