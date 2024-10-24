@@ -1,0 +1,39 @@
+[
+    {
+        "firstName": "Darth",
+        "lastName": "Vader",
+        "dateOfBirth": [
+            1989,
+            12,
+            12
+        ],
+        "address": "Tatooine",
+        "mobileNumber": 111222333
+    }
+    {
+        "firstName": "Master",
+        "lastName": "Yoda",
+        "dateOfBirth": [
+            1990,
+            12,
+            12
+        ],
+        "address": "Unknown Planet",
+        "mobileNumber": 111222444
+    }
+    {
+        "firstName": "Mace",
+        "lastName": "Windu",
+        "dateOfBirth": [
+            1900,
+            12,
+            12
+        ],
+        "address": "Haruun Kal",
+        "mobileNumber": 111222777
+    }
+]
+
+http://localhost:8080/search?filter=firstName:'Master' and lastName = 'Yoda'
+
+http://localhost:8080/search?filter=mobileNumber=111222444
