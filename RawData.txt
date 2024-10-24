@@ -33,7 +33,3 @@
         "mobileNumber": 111222777
     }
 ]
-
-http://localhost:8080/search?filter=firstName:'Master' and lastName = 'Yoda'
-
-http://localhost:8080/search?filter=mobileNumber=111222444
